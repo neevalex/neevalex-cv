@@ -411,9 +411,6 @@
         }
 
         var sourceElement = document.body;
-        var rootStyle = document.documentElement.style;
-        var previousPageWidth = rootStyle.getPropertyValue('--page-width');
-        var previousPageHeight = rootStyle.getPropertyValue('--page-height');
         var fileName = 'AlexNeev-CV.pdf';
         var options = {
           margin: [0, 0, 0, 0],
@@ -423,12 +420,11 @@
             scale: 2,
             useCORS: true,
             scrollX: 0,
-            scrollY: 0,
-            windowWidth: sourceElement.scrollWidth
+            scrollY: 0
           },
           jsPDF: {
             unit: 'mm',
-            format: 'a4',
+            format: [241.3, 279.4],
             orientation: 'portrait'
           },
           pagebreak: {
@@ -436,23 +432,9 @@
           }
         };
 
-        rootStyle.setProperty('--page-width', '8.27in');
-        rootStyle.setProperty('--page-height', '11.69in');
         downloadButton.setAttribute('aria-busy', 'true');
 
         html2pdf().set(options).from(sourceElement).save().finally(function () {
-          if (previousPageWidth) {
-            rootStyle.setProperty('--page-width', previousPageWidth);
-          } else {
-            rootStyle.removeProperty('--page-width');
-          }
-
-          if (previousPageHeight) {
-            rootStyle.setProperty('--page-height', previousPageHeight);
-          } else {
-            rootStyle.removeProperty('--page-height');
-          }
-
           downloadButton.removeAttribute('aria-busy');
         });
       });
