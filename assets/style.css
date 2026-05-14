@@ -432,10 +432,14 @@ header h1 {
   position: relative;
 }
 
-#title .download-pdf svg {
+.download-pdf svg {
   max-height: 35px;
   width: auto;
   z-index: 99999;
+}
+
+.download-pdf {
+    text-decoration: none;
 }
 
 #title .download-pdf {
