@@ -1,0 +1,52 @@
+name: Deploy CV via SFTP
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-cv
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Sync repository to neevalex.com CV folder
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install lftp
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lftp
+
+      - name: Sync files to remote server
+        env:
+          SFTP_HOST: ${{ vars.SFTP_HOST }}
+          SFTP_USER: ${{ vars.SFTP_USER }}
+          SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+          REMOTE_DIR: /home/neevalex.com/public_html/cv
+        run: |
+          set -euo pipefail
+
+          if [ -z "${SFTP_HOST}" ] || [ -z "${SFTP_USER}" ] || [ -z "${SFTP_PASSWORD}" ]; then
+            echo "Missing SFTP deployment configuration. Set vars.SFTP_HOST, vars.SFTP_USER, and secret SFTP_PASSWORD."
+            exit 1
+          fi
+
+          lftp -u "${SFTP_USER},${SFTP_PASSWORD}" "sftp://${SFTP_HOST}" <<EOF
+          set sftp:auto-confirm yes
+          set net:max-retries 3
+          set net:timeout 20
+          mkdir -p ${REMOTE_DIR}
+          mirror --reverse --delete --verbose \
+            --exclude-glob .git/ \
+            --exclude-glob .github/ \
+            --exclude-glob .gitignore \
+            ./ ${REMOTE_DIR}/
+          bye
+          EOF
