@@ -452,3 +452,321 @@ header h1 {
 .details .location {
   font-size: 10pt;
 }
+
+/* Modern visual refresh: developer-focused, print-friendly, Vercel-inspired */
+html {
+  min-height: 100%;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(10, 114, 239, 0.16), transparent 28%),
+    radial-gradient(circle at 88% 18%, rgba(222, 29, 141, 0.12), transparent 26%),
+    linear-gradient(135deg, #f7f9fc 0%, #eef2f7 100%);
+}
+
+body {
+  overflow: hidden;
+  margin: 0.35in auto 0.65in;
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #1f2937;
+  background: #ffffff;
+  border-radius: 28px;
+  box-shadow: 0 28px 90px rgba(15, 23, 42, 0.18), 0 0 0 1px rgba(15, 23, 42, 0.08);
+}
+
+#main {
+  background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+}
+
+#sidebar {
+  color: rgba(255, 255, 255, 0.88);
+  background:
+    radial-gradient(circle at 20% 10%, rgba(96, 165, 250, 0.32), transparent 26%),
+    radial-gradient(circle at 92% 38%, rgba(236, 72, 153, 0.22), transparent 28%),
+    linear-gradient(180deg, #0f172a 0%, #111827 48%, #020617 100%);
+}
+
+#title {
+  left: 0;
+  width: calc(100% - 0.15in);
+  min-height: 118px;
+  padding: 18px 20px 14px 112px;
+  margin: 0 0 0.22in 0;
+  border-radius: 24px;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.96), rgba(248,250,252,0.92)),
+    radial-gradient(circle at 88% 15%, rgba(10,114,239,0.15), transparent 24%);
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.08), 0 18px 45px rgba(15, 23, 42, 0.08);
+}
+
+header img {
+  position: absolute;
+  left: 22px;
+  top: 20px;
+  max-width: 74px;
+  height: 74px;
+  object-fit: cover;
+  float: none;
+  border-radius: 22px;
+  box-shadow: 0 0 0 4px #ffffff, 0 12px 28px rgba(15, 23, 42, 0.22);
+}
+
+#title h1 {
+  margin: 0;
+  color: #0f172a;
+  font-weight: 700;
+  font-size: 25pt;
+  line-height: 1;
+  letter-spacing: -1.4px;
+}
+
+.subtitle {
+  display: inline-block;
+  margin-top: 8px;
+  color: #334155;
+  font-size: 8.3pt;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+#title ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 12px;
+  padding: 0;
+  margin: 12px 0 0;
+  color: #475569;
+  font-size: 7.4pt;
+}
+
+#title ul li {
+  margin: 0;
+  white-space: nowrap;
+}
+
+#title a {
+  color: #0f5fd7;
+  text-decoration: none;
+}
+
+#title .download-pdf {
+  top: 16px;
+  right: 18px;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.10), 0 10px 25px rgba(15, 23, 42, 0.10);
+}
+
+#title .download-pdf svg {
+  max-height: 29px;
+}
+
+.main-block.summary {
+  padding: 16px 18px;
+  margin: 0 0 0.22in 0;
+  border-radius: 20px;
+  color: #334155;
+  background: #ffffff;
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.08), 0 10px 30px rgba(15, 23, 42, 0.05);
+}
+
+.main-block.summary .blocks {
+  line-height: 1.42;
+}
+
+#main h2,
+#main h3 {
+  color: #0f172a;
+  font-weight: 700;
+  letter-spacing: -0.25px;
+}
+
+#main h2 {
+  font-size: 12pt;
+  margin-bottom: 8px;
+}
+
+#main h2 > i,
+#main h2 > .fa-graduation-cap,
+#main h2 > .fa-suitcase {
+  color: #0a72ef;
+}
+
+.decorator {
+  border-left: 2px solid #dbeafe;
+}
+
+.decorator::before {
+  background: #eff6ff;
+  box-shadow: 0 0 0 3px #ffffff;
+}
+
+.decorator::after {
+  background: linear-gradient(135deg, #0a72ef, #7c3aed);
+}
+
+.date {
+  color: #64748b;
+  font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 500;
+  letter-spacing: -0.2px;
+}
+
+.details {
+  margin-bottom: 18px;
+}
+
+.details header {
+  padding: 11px 12px 10px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.75);
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.06);
+}
+
+.details h3 {
+  color: #0f172a;
+  font-size: 9.4pt;
+  font-weight: 700;
+  margin-bottom: 7px;
+}
+
+.details .place {
+  color: #0a72ef;
+  font-size: 7.7pt;
+  font-weight: 700;
+}
+
+.details .about {
+  display: block;
+  clear: both;
+  color: #64748b;
+  font-size: 7.4pt;
+  line-height: 1.35;
+  padding-top: 2px;
+}
+
+.details .location {
+  top: 12px;
+  right: 12px;
+  color: #64748b;
+  font-size: 7.6pt;
+}
+
+.main-block:not(.concise) .details div {
+  margin-top: 0.10in;
+}
+
+#main li {
+  color: #334155;
+  line-height: 1.36;
+  margin-bottom: 0.045in;
+}
+
+#main li::before {
+  color: #0a72ef;
+  font-weight: 700;
+  content: "• ";
+}
+
+#sidebar h1 {
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+}
+
+.side-block {
+  margin-top: 0.26in;
+  padding: 14px 12px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(10px);
+}
+
+#sidebar a {
+  color: #bfdbfe;
+}
+
+#contact ul {
+  font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  line-height: 1.65;
+}
+
+#contact li > i {
+  color: #60a5fa;
+}
+
+#skills {
+  line-height: 1.42;
+}
+
+#skills ul {
+  margin-top: 0.08in;
+}
+
+#skills li {
+  margin-bottom: 9px;
+  padding-bottom: 9px;
+  color: rgba(255,255,255,0.82);
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+}
+
+#skills li:last-child {
+  border-bottom: 0;
+}
+
+#skills strong {
+  display: block;
+  margin-bottom: 2px;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+@media print {
+  html { background: #ffffff; }
+  body {
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  #title,
+  .main-block.summary,
+  .details header,
+  .side-block {
+    box-shadow: none;
+  }
+}
+
+/* Layout balancing tweaks after visual review */
+body {
+  display: flex;
+  align-items: stretch;
+  height: auto;
+  min-height: var(--page-height);
+  hyphens: none;
+}
+
+#main,
+#sidebar {
+  float: none;
+}
+
+#sidebar {
+  height: auto;
+  min-height: var(--page-height);
+}
+
+.details .about,
+.details .location,
+#title ul {
+  hyphens: none;
+}
+
+/* Final readability polish */
+#title ul { font-size: 7.8pt; }
+.details .about { font-size: 7.8pt; color: #526174; }
+.details .location { font-size: 8pt; }
+#skills li { color: rgba(255,255,255,0.88); }
+#contact ul { font-size: 8.2pt; }
