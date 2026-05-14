@@ -27,6 +27,7 @@ jobs:
       - name: Sync files to remote server
         env:
           SFTP_HOST: ${{ vars.SFTP_HOST }}
+          SFTP_PORT: ${{ vars.SFTP_PORT }}
           SFTP_USER: ${{ vars.SFTP_USER }}
           SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
           REMOTE_DIR: ${{ vars.SFTP_REMOTE_DIR }}
@@ -40,17 +41,31 @@ jobs:
 
           # Most shared hosting SFTP accounts are chrooted, so absolute /home/... paths often fail.
           REMOTE_DIR="${REMOTE_DIR:-public_html/cv}"
-          echo "Deploy target: ${REMOTE_DIR}"
+          SFTP_PORT="${SFTP_PORT:-22}"
 
-          lftp -u "${SFTP_USER},${SFTP_PASSWORD}" "sftp://${SFTP_HOST}" <<EOF
+          # Allow SFTP_HOST to be either host, host:port, or a URL-like value.
+          SFTP_HOST="${SFTP_HOST#sftp://}"
+          SFTP_HOST="${SFTP_HOST#ftp://}"
+          SFTP_HOST="${SFTP_HOST%%/*}"
+          if [[ "${SFTP_HOST}" == *:* ]]; then
+            if [ -z "${SFTP_PORT:-}" ] || [ "${SFTP_PORT}" = "22" ]; then
+              SFTP_PORT="${SFTP_HOST##*:}"
+            fi
+            SFTP_HOST="${SFTP_HOST%%:*}"
+          fi
+
+          echo "Deploy target: ${REMOTE_DIR}"
+          echo "SFTP endpoint: ${SFTP_HOST}:${SFTP_PORT}"
+
+          lftp <<EOF
           set sftp:auto-confirm yes
           set cmd:fail-exit yes
-          set net:max-retries 5
+          set net:max-retries 3
           set net:reconnect-interval-base 5
           set net:reconnect-interval-max 30
           set net:timeout 30
+          open -u "${SFTP_USER},${SFTP_PASSWORD}" -p "${SFTP_PORT}" "sftp://${SFTP_HOST}"
           pwd
-          mkdir -p "${REMOTE_DIR}"
           mirror --reverse --delete --verbose \
             --exclude-glob .git/ \
             --exclude-glob .github/ \
