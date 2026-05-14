@@ -453,6 +453,21 @@ header h1 {
   font-size: 10pt;
 }
 
+body.pdf-exporting #sidebar {
+  background: none !important;
+  background-color: transparent !important;
+}
+
+body.pdf-exporting #sidebar,
+body.pdf-exporting #sidebar *,
+body.pdf-exporting #sidebar a,
+body.pdf-exporting #sidebar h1,
+body.pdf-exporting #sidebar strong,
+body.pdf-exporting #sidebar i {
+  color: #111111 !important;
+  text-shadow: none !important;
+}
+
 /* Modern visual refresh: developer-focused, print-friendly, Vercel-inspired */
 html {
   min-height: 100%;

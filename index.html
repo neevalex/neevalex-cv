@@ -31,7 +31,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
   <link rel="stylesheet" type="text/css" href="assets/dep/normalize.css/normalize.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" type="text/css" href="assets/style.css?version=1.08" />
+  <link rel="stylesheet" type="text/css" href="assets/style.css?version=1.09" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   
   <!-- JSON-LD Structured Data -->
@@ -411,9 +411,6 @@
         }
 
         var sourceElement = document.body;
-        var sidebarElement = document.getElementById('sidebar');
-        var previousSidebarBackground = sidebarElement ? sidebarElement.style.background : '';
-        var previousSidebarBackgroundColor = sidebarElement ? sidebarElement.style.backgroundColor : '';
         var fileName = 'AlexNeev-CV.pdf';
         var options = {
           margin: [0, 0, 0, 0],
@@ -436,18 +433,10 @@
         };
 
         downloadButton.setAttribute('aria-busy', 'true');
-
-        if (sidebarElement) {
-          sidebarElement.style.background = 'none';
-          sidebarElement.style.backgroundColor = 'transparent';
-        }
+        sourceElement.classList.add('pdf-exporting');
 
         html2pdf().set(options).from(sourceElement).save().finally(function () {
-          if (sidebarElement) {
-            sidebarElement.style.background = previousSidebarBackground;
-            sidebarElement.style.backgroundColor = previousSidebarBackgroundColor;
-          }
-
+          sourceElement.classList.remove('pdf-exporting');
           downloadButton.removeAttribute('aria-busy');
         });
       });
