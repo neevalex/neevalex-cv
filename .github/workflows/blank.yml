@@ -12,19 +12,14 @@ concurrency:
 
 jobs:
   deploy:
-    name: Sync repository to neevalex.com CV folder
+    name: Upload repository to neevalex.com CV folder
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install lftp
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y lftp
-
-      - name: Sync files to remote server
+      - name: Prepare deploy settings
         env:
           SFTP_HOST: ${{ vars.SFTP_HOST }}
           SFTP_PORT: ${{ vars.SFTP_PORT }}
@@ -39,7 +34,7 @@ jobs:
             exit 1
           fi
 
-          # Most shared hosting SFTP accounts are chrooted, so absolute /home/... paths often fail.
+          # Most shared hosting accounts are chrooted; relative path is safer.
           REMOTE_DIR="${REMOTE_DIR:-public_html/cv}"
           SFTP_PORT="${SFTP_PORT:-22}"
 
@@ -54,22 +49,26 @@ jobs:
             SFTP_HOST="${SFTP_HOST%%:*}"
           fi
 
+          echo "DEPLOY_HOST=${SFTP_HOST}" >> "$GITHUB_ENV"
+          echo "DEPLOY_PORT=${SFTP_PORT}" >> "$GITHUB_ENV"
+          echo "DEPLOY_USER=${SFTP_USER}" >> "$GITHUB_ENV"
+          echo "DEPLOY_TARGET=${REMOTE_DIR}" >> "$GITHUB_ENV"
+
           echo "Deploy target: ${REMOTE_DIR}"
           echo "SFTP endpoint: ${SFTP_HOST}:${SFTP_PORT}"
 
-          lftp <<EOF
-          set sftp:auto-confirm yes
-          set cmd:fail-exit yes
-          set net:max-retries 3
-          set net:reconnect-interval-base 5
-          set net:reconnect-interval-max 30
-          set net:timeout 30
-          open -u "${SFTP_USER},${SFTP_PASSWORD}" -p "${SFTP_PORT}" "sftp://${SFTP_HOST}"
-          pwd
-          mirror --reverse --delete --verbose \
-            --exclude-glob .git/ \
-            --exclude-glob .github/ \
-            --exclude-glob .gitignore \
-            ./ "${REMOTE_DIR}/"
-          bye
-          EOF
+      - name: Upload files via SCP action
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ env.DEPLOY_HOST }}
+          username: ${{ env.DEPLOY_USER }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          port: ${{ env.DEPLOY_PORT }}
+          source: "."
+          target: ${{ env.DEPLOY_TARGET }}
+          strip_components: 0
+          overwrite: true
+          rm: false
+          tar_dereference: true
+          tar_tmp_path: /tmp
+          exclude: ".git,.github,.gitignore"
