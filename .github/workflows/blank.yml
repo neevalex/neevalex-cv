@@ -45,7 +45,7 @@ jobs:
           lftp -u "${SFTP_USER},${SFTP_PASSWORD}" "sftp://${SFTP_HOST}" <<EOF
           set sftp:auto-confirm yes
           set cmd:fail-exit yes
-          set net:max-retries 10
+          set net:max-retries 5
           set net:reconnect-interval-base 5
           set net:reconnect-interval-max 30
           set net:timeout 30
