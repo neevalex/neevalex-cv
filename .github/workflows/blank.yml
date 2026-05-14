@@ -29,7 +29,7 @@ jobs:
           SFTP_HOST: ${{ vars.SFTP_HOST }}
           SFTP_USER: ${{ vars.SFTP_USER }}
           SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
-          REMOTE_DIR: /home/neevalex.com/public_html/cv
+          REMOTE_DIR: ${{ vars.SFTP_REMOTE_DIR }}
         run: |
           set -euo pipefail
 
@@ -38,15 +38,23 @@ jobs:
             exit 1
           fi
 
+          # Most shared hosting SFTP accounts are chrooted, so absolute /home/... paths often fail.
+          REMOTE_DIR="${REMOTE_DIR:-public_html/cv}"
+          echo "Deploy target: ${REMOTE_DIR}"
+
           lftp -u "${SFTP_USER},${SFTP_PASSWORD}" "sftp://${SFTP_HOST}" <<EOF
           set sftp:auto-confirm yes
-          set net:max-retries 3
-          set net:timeout 20
-          mkdir -p ${REMOTE_DIR}
+          set cmd:fail-exit yes
+          set net:max-retries 10
+          set net:reconnect-interval-base 5
+          set net:reconnect-interval-max 30
+          set net:timeout 30
+          pwd
+          mkdir -p "${REMOTE_DIR}"
           mirror --reverse --delete --verbose \
             --exclude-glob .git/ \
             --exclude-glob .github/ \
             --exclude-glob .gitignore \
-            ./ ${REMOTE_DIR}/
+            ./ "${REMOTE_DIR}/"
           bye
           EOF
